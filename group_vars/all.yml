@@ -1,0 +1,9 @@
+---
+#Variables by default
+tempdir: /opt
+source: https://github.com/git/git/archive/master.zip
+file: master.zip
+folder: git-master
+configure_parameters: --prefix=/usr
+clean_tarball: true
+clean_source: false
