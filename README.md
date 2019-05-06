@@ -11,3 +11,5 @@ Tested on:
 -Centos 6.5
 
 -Debian Wheezy
+
+-Ubuntu server 19.04
