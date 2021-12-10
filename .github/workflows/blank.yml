@@ -42,7 +42,7 @@ jobs:
       
       # If `roles` folder does not exist, assume we are in a repository containing just the role
       - name: Creating dummy2.yml from roles folder (if exists)
-        run: test -d "tasks" || exit 0 && echo $LINE1 > /tmp/dummy2.yml && echo $LINE2 >> /tmp/dummy2.yml && printf "  roles:\n" >> /tmp/dummy2.yml &&  REPO=`echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1` && printf "  - $REPO\n" >> /tmp/dummy2.yml
+        run: REPO=`echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1`; test -d "tasks" || exit 0 && echo $LINE1 > /tmp/dummy2.yml && echo $LINE2 >> /tmp/dummy2.yml && printf "  roles:\n" >> /tmp/dummy2.yml && printf "  - $REPO\n" >> /tmp/dummy2.yml
         env:
           LINE1: "---"
           LINE2: "- hosts: localhost"
