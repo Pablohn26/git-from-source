@@ -49,5 +49,5 @@ jobs:
         
         # Check ansible syntax
       - name: Ansible Syntax Check
-        run: test -f "/tmp/dummy2.yml" || exit 0 &&  mkdir -p /tmp/roles/ && cd .. && mv `echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1` /tmp/roles/ && ANSIBLE_ROLES_PATH=/tmp/roles ansible-playbook /tmp/dummy2.yml --syntax-check
+        run: test -f "/tmp/dummy2.yml" || exit 0 &&  mkdir -p /tmp/roles/ && cd .. && cp -a `echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1` /tmp/roles/ && ANSIBLE_ROLES_PATH=/tmp/roles ansible-playbook /tmp/dummy2.yml --syntax-check
         
