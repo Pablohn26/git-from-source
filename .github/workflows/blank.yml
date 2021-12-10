@@ -31,14 +31,14 @@ jobs:
         
       # If `roles` folder exists, create a dummy.yml playbook to perform the syntax check
       - name: Creating dummy.yml from roles folder (if exists)
-        run: test -d "roles" || exit 0 && echo $LINE1 > /tmp/dummy.yml && echo $LINE2 >> /tmp/dummy.yml && printf "  roles:\n" >> /tmp/dummy.yml &&  for i in `ls roles`; do echo "  - $i" >> /tmp/dummy.yml; done
+        run: test -d "roles" || exit 0 && echo $LINE1 > dummy.yml && echo $LINE2 >> dummy.yml && printf "  roles:\n" >> dummy.yml &&  for i in `ls roles`; do echo "  - $i" >> dummy.yml; done
         env: 
           LINE1: "---"
           LINE2: "- hosts: localhost"
           
       # Check ansible syntax if roles folder exists (repo with playbooks and roles)
       - name: Ansible Syntax Check
-        run: test -f "/tmp/dummy.yml" || exit 0 && ansible-playbook /tmp/dummy.yml --syntax-check
+        run: test -f "dummy.yml" || exit 0 && ansible-playbook $GITHUB_WORKSPACE/dummy.yml --syntax-check
       
       # If `roles` folder does not exist, assume we are in a repository containing just the role
       - name: Creating dummy2.yml from roles folder (if exists)
