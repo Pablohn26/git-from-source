@@ -31,7 +31,7 @@ jobs:
         
       # If `roles` folder exists, create a dummy.yml playbook to perform the syntax check
       - name: Creating dummy.yml from roles folder (if exists)
-        run: test -d "roles" && echo $LINE1 > dummy.yml && echo $LINE2 >> dummy.yml && printf "  roles:\n" >> dummy.yml &&  for i in `ls roles`; do echo "  - $i" >> dummy.yml; done
+        run: test -d "roles" || exit 0 && echo $LINE1 > dummy.yml && echo $LINE2 >> dummy.yml && printf "  roles:\n" >> dummy.yml &&  for i in `ls roles`; do echo "  - $i" >> dummy.yml; done
         env: 
           LINE1: "---"
           LINE2: "- hosts: localhost"
@@ -42,7 +42,7 @@ jobs:
       
       # If `roles` folder does not exist, assume we are in a repository containing just the role
       - name: Creating dummy2.yml from roles folder (if exists)
-        run: test -d "tasks" && echo $LINE1 > dummy2.yml && echo $LINE2 >> dummy2.yml && printf "  roles:\n" >> dummy2.yml &&  REPO=`echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1` && printf "  - $REPO\n" >> dummy2.yml
+        run: test -d "tasks" || exit 0 && echo $LINE1 > dummy2.yml && echo $LINE2 >> dummy2.yml && printf "  roles:\n" >> dummy2.yml &&  REPO=`echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1` && printf "  - $REPO\n" >> dummy2.yml
         env:
           LINE1: "---"
           LINE2: "- hosts: localhost"
