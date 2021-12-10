@@ -1,0 +1,17 @@
+---
+
+- name: Installing Debian family dependencies
+  apt:
+      name:
+        - build-essential
+        - zlib1g-dev
+        - libextutils-cbuilder-perl
+        - libmodule-install-perl
+        - gettext
+        - asciidoc
+        - xmlto
+        - wget
+        - unzip
+        - make
+        - autoconf
+        - gcc

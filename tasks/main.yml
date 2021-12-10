@@ -1,0 +1,34 @@
+---
+
+- include: prerequisites-debian.yml
+  when: ansible_pkg_mgr == "apt"
+  
+- include: prerequisites-redhat.yml
+  when: ansible_pkg_mgr == "yum"
+
+- name: Downloading source code from Github
+  command: chdir={{ tempdir }} wget {{ source }} creates={{ tempdir }}/{{ file }}
+    
+- name: Extracting
+  command: chdir={{ tempdir }} unzip -qo {{ tempdir }}/{{ file }} 
+  #creates={{ tempdir }}/{{ folder }}
+  
+- name: Configuring...
+  command: chdir={{ tempdir }}/{{ folder }} make configure
+
+- name: Building Configure
+  command: chdir={{ tempdir }}/{{ folder }} ./configure {{ configure_parameters }}
+  
+- name: Making...
+  command: chdir={{ tempdir }}/{{ folder }} make all doc
+      
+- name: Installing...
+  command: chdir={{ tempdir }}/{{ folder }} make install install-doc install-html
+
+- name: Removing tarball
+  command: rm -f {{ tempdir }}/{{ file }}
+  when: clean_tarball 
+
+- name: Removing source
+  command: rm -rf {{ tempdir }}/{{ folder }}
+  when: clean_source 
