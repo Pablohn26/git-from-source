@@ -42,12 +42,12 @@ jobs:
       
       # If `roles` folder does not exist, assume we are in a repository containing just the role
       - name: Creating dummy2.yml from roles folder (if exists)
-        run: REPO=`echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1` test -d "tasks" || exit 0 && echo $LINE1 > /tmp/dummy2.yml && echo $LINE2 >> /tmp/dummy2.yml && printf "  roles:\n" >> /tmp/dummy2.yml && printf "  - $REPO\n" >> /tmp/dummy2.yml
+        run: REPO=`echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1` test -d "tasks" || exit 0 && echo $LINE1 > /tmp/dummy2.yml && echo $LINE2 >> /tmp/dummy2.yml && printf "  roles:\n" >> /tmp/dummy2.yml && printf "  - $REPO\n" >> /tmp/dummy2.yml && cat /tmp/dummy2.yml
         env:
           LINE1: "---"
           LINE2: "- hosts: localhost"
         
         # Check ansible syntax
       - name: Ansible Syntax Check
-        run: REPO=`echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1` test -f "/tmp/dummy2.yml" || exit 0 &&  mkdir -p /tmp/roles/ && cd ..  && mv $REPO /tmp/roles/ && ANSIBLE_ROLES_PATH=/tmp/roles ansible-playbook /tmp/dummy2.yml --syntax-check
+        run: REPO=`echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1` test -f "/tmp/dummy2.yml" || exit 0 &&  mkdir -p /tmp/roles/ && cd .. && echo "repo content" && echo $REPO  && mv $REPO /tmp/roles/ && ANSIBLE_ROLES_PATH=/tmp/roles ansible-playbook /tmp/dummy2.yml --syntax-check
         
