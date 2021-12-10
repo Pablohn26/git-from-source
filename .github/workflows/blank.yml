@@ -30,7 +30,5 @@ jobs:
         run: sudo apt update && sudo apt install -y python3-pip && sudo pip3 install ansible
 
       # Runs a set of commands using the runners shell
-      - name: Run a multi-line script
-        run: |
-          echo Add other actions to build,
-          ansible-playbook $GITHUB_WORKSPACE/install.yml --syntax-check
+      - name: Ansible Syntax Check
+        run: ansible-playbook $GITHUB_WORKSPACE/install.yml --syntax-check
