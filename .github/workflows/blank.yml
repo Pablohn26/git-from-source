@@ -25,10 +25,29 @@ jobs:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
       - uses: actions/checkout@v2
 
-      # Runs a single command using the runners shell
+      # Install python3 pip and ansible latest
       - name: Install python and ansible
         run: sudo apt update && sudo apt install -y python3-pip && sudo pip3 install ansible
+        
+      # If `roles` folder exists, create a dummy.yml playbook to perform the syntax check
+      - name: Creating dummy.yml from roles folder (if exists)
+        run: [ -d "roles" ] && echo -e "---\n- hosts: localhost\n  roles: " > dummy.yml &&  for i in `ls roles`; do echo "  - $i" >> dummy.yml; done
 
       # Runs a set of commands using the runners shell
       - name: Ansible Syntax Check
-        run: ansible-playbook $GITHUB_WORKSPACE/install.yml --syntax-check
+        run: [ -f "dummy.yml" ] && ansible-playbook $GITHUB_WORKSPACE/dummy.yml --syntax-check
+      # TODO
+      # If `roles` folder does not exist, assume we are in a repository containing just the role
+      #- name: Creating dummy.yml from roles folder (if exists)
+      #  run: [ -d "tasks" ] && echo -e "---\n- hosts: localhost\n  roles: " > dummy.yml &&  echo $GITHUB_REPOSITORY | tr "/" "\n" | tail -1 >> dummy.yml
+
+      # Runs a set of commands using the runners shell
+      #- name: Ansible Syntax Check
+      #  run: [ -f "dummy.yml" ] && DEFAULT_ROLES_PATH=$GITHUB_WORKSPACE/../ ansible-playbook $GITHUB_WORKSPACE/dummy.yml --syntax-check
+
+        
+        
+        
+        
+        
+        
