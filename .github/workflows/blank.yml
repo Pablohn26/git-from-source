@@ -38,7 +38,9 @@ jobs:
           
       # Check ansible syntax if roles folder exists (repo with playbooks and roles)
       - name: Ansible Syntax Check of all roles of the playbook
-        run: test -f "playbook_repo.yml" || exit 0 && ANSIBLE_ACTION_WARNINGS="False" ansible-playbook $GITHUB_WORKSPACE/playbook_repo.yml --syntax-check
+        run: test -f "playbook_repo.yml" || exit 0 && ansible-playbook $GITHUB_WORKSPACE/playbook_repo.yml --syntax-check
+        env:
+           ANSIBLE_ACTION_WARNINGS: False
       
       # If `roles` folder does not exist, assume we are in a repository containing just the role
       - name: Creating role_repo.yml from roles folder (if exists)
@@ -53,5 +55,7 @@ jobs:
         
       # Check ansible syntax if tasks folder exists (repo with just the role)
       - name: Ansible Syntax Check of role
-        run: test -f "/tmp/role_repo.yml" || exit 0 &&  ANSIBLE_ROLES_PATH=/tmp/roles ANSIBLE_ACTION_WARNINGS="False" ansible-playbook /tmp/role_repo.yml --syntax-check
+        run: test -f "/tmp/role_repo.yml" || exit 0 &&  ANSIBLE_ROLES_PATH=/tmp/roles  ansible-playbook /tmp/role_repo.yml --syntax-check
+        env:
+           ANSIBLE_ACTION_WARNINGS: False
 
